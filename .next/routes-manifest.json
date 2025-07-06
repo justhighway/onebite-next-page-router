@@ -1,0 +1,81 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "dynamicRoutes": [
+    {
+      "page": "/books/[id]",
+      "regex": "^/books/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/books/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/404",
+      "regex": "^/404(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/404(?:/)?$"
+    },
+    {
+      "page": "/search",
+      "regex": "^/search(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/search(?:/)?$"
+    }
+  ],
+  "dataRoutes": [
+    {
+      "page": "/",
+      "dataRouteRegex": "^/_next/data/Y92FVsr4sVeS\\-rNRsZ1RG/index\\.json$"
+    },
+    {
+      "page": "/books/[id]",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "dataRouteRegex": "^/_next/data/Y92FVsr4sVeS\\-rNRsZ1RG/books/([^/]+?)\\.json$",
+      "namedDataRouteRegex": "^/_next/data/Y92FVsr4sVeS\\-rNRsZ1RG/books/(?<nxtPid>[^/]+?)\\.json$"
+    },
+    {
+      "page": "/search",
+      "dataRouteRegex": "^/_next/data/Y92FVsr4sVeS\\-rNRsZ1RG/search\\.json$"
+    }
+  ],
+  "rsc": {
+    "header": "RSC",
+    "varyHeader": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch",
+    "prefetchHeader": "Next-Router-Prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "Next-Router-Segment-Prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  },
+  "rewrites": []
+}
