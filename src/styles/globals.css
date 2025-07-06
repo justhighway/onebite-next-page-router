@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@layer base {
+  html,
+  body {
+    font-size: 62.5%;
+    @apply bg-gray-50;
+  }
+}
