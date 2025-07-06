@@ -1,22 +1,18 @@
 import { getDetailedBook } from '@/services/books';
 
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // SSG로 렌더링하게 하는 함수
 export const getStaticProps = async (
-  context: GetStaticPropsContext // SSG 전용 Context
+  context: GetStaticPropsContext, // SSG 전용 Context
 ) => {
   const id = context.params!.id;
   const detailedBook = await getDetailedBook(Number(id));
 
   // getStaticProps 내부에서 방어코드 적용 가능
-  if (
-    !id ||
-    Array.isArray(id) ||
-    isNaN(Number(id)) ||
-    !detailedBook
-  ) {
+  if (!id || Array.isArray(id) || isNaN(Number(id)) || !detailedBook) {
     // 위 조건들에 만족하면 notFound로 바로 처리
     return {
       notFound: true,
@@ -56,41 +52,53 @@ const BookDetailPage = ({
   // SSG fallback 컨트롤 가능 (fallback:true일 때 무조건 구현해야 함)
   if (router.isFallback) {
     return (
-      <div className='text-center text-3xl p-10'>로딩 중...</div>
+      <>
+        <Head>
+          <title>한입북스</title>
+          <meta property='og:title' content='한입북스' />
+          <meta
+            property='og:description'
+            content='한입 북스에 등록된 도서들을 만나보세요'
+          />
+        </Head>
+        <div className='text-center text-3xl p-10'>로딩 중...</div>
+      </>
     );
   }
-  const {
-    title,
-    subTitle,
-    description,
-    author,
-    publisher,
-    coverImgUrl,
-  } = detailedBook;
+  const { title, subTitle, description, author, publisher, coverImgUrl } =
+    detailedBook;
 
   return (
-    <div className='flex flex-col gap-8'>
-      <div
-        className='relative flex items-center justify-center p-8 bg-center bg-no-repeat bg-cover before:absolute before:inset-0 before:bg-black/80'
-        style={{ backgroundImage: `url(${coverImgUrl})` }}
-      >
-        <img
-          src={coverImgUrl}
-          alt='커버 이미지'
-          className='z-10 max-h-[35rem] h-full select-none'
-        />
+    <>
+      <Head>
+        <title>한입북스 | {title}</title>
+        <meta property='og:thumbnail' content={coverImgUrl} />
+        <meta property='og:title' content={title} />
+        <meta property='og:description' content={description} />
+      </Head>
+      <div className='flex flex-col gap-8'>
+        <div
+          className='relative flex items-center justify-center p-8 bg-center bg-no-repeat bg-cover before:absolute before:inset-0 before:bg-black/80'
+          style={{ backgroundImage: `url(${coverImgUrl})` }}
+        >
+          <img
+            src={coverImgUrl}
+            alt='커버 이미지'
+            className='z-10 max-h-[35rem] h-full select-none'
+          />
+        </div>
+        <div className='text-2xl'>
+          <p className='text-3xl font-bold'>{title}</p>
+          <p className='text-gray-600'>{subTitle}</p>
+          <p className='text-gray-600'>
+            {author} | {publisher}
+          </p>
+        </div>
+        <div className='bg-gray-50 rounded-lg p-6 leading-5 whitespace-pre-line'>
+          <p className='text-2xl'>{description}</p>
+        </div>
       </div>
-      <div className='text-2xl'>
-        <p className='text-3xl font-bold'>{title}</p>
-        <p className='text-gray-600'>{subTitle}</p>
-        <p className='text-gray-600'>
-          {author} | {publisher}
-        </p>
-      </div>
-      <div className='bg-gray-50 rounded-lg p-6 leading-5 whitespace-pre-line'>
-        <p className='text-2xl'>{description}</p>
-      </div>
-    </div>
+    </>
   );
 };
 export default BookDetailPage;

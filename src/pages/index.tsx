@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import BookItem from '@/components/BookItem';
 import { InferGetStaticPropsType } from 'next';
 import { getBooks, getRandomBooks } from '@/services/books';
+import Head from 'next/head';
 
 // 페이지 컴포넌트를 서버사이드에서 실행시키는 함수
 // 컴포넌트보다 먼저 실행되어서 컴포넌트에 필요한 데이터를 불러오는 함수
@@ -20,7 +21,6 @@ export const getStaticProps = async () => {
       allBooks,
     },
     // revalidate: 초마다 컨텐츠 재생성
-    revalidate: 3,
   };
 };
 
@@ -38,20 +38,30 @@ const Home = ({
   allBooks,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <div className='flex flex-col gap-4'>
-      <section>
-        <h3 className='font-bold text-3xl'>지금 추천하는 도서</h3>
-        {randomBooks.map((book) => (
-          <BookItem key={book.id} {...book} />
-        ))}
-      </section>
-      <section>
-        <h3 className='font-bold text-3xl'>등록된 모든 도서</h3>
-        {allBooks.map((book) => (
-          <BookItem key={book.id} {...book} />
-        ))}
-      </section>
-    </div>
+    <>
+      <Head>
+        <title>한입북스</title>
+        <meta property='og:title' content='한입북스' />
+        <meta
+          property='og:description'
+          content='한입 북스에 등록된 도서들을 만나보세요'
+        />
+      </Head>
+      <div className='flex flex-col gap-4'>
+        <section className='mt-8'>
+          <h3 className='font-bold text-3xl'>지금 추천하는 도서</h3>
+          {randomBooks.map((book) => (
+            <BookItem key={book.id} {...book} />
+          ))}
+        </section>
+        <section>
+          <h3 className='font-bold text-3xl'>등록된 모든 도서</h3>
+          {allBooks.map((book) => (
+            <BookItem key={book.id} {...book} />
+          ))}
+        </section>
+      </div>
+    </>
   );
 };
 
